@@ -12,22 +12,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TicketFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
-        $usersIds = User::pluck('id')->toArray();
+        // Obtener los IDs de usuarios existentes
+        $userIds = User::pluck('id')->toArray();
         $statusIds = TicketStatus::pluck('id')->toArray();
 
         return [
             'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraphs(),
-            'requester_id' => $this->faker->randomElement($users) ?? User::factory(),
-            'assigned_support_id' => $this->faker->randomElement($users) ?? User::factory(),
-            'status_id' => TicketStatus::query()->inRandomOrder()->value('id') ?? TicketStatus::factory(),
+            'description' => $this->faker->paragraph(),
+            'requester_id' => count($userIds) ? $this->faker->randomElement($userIds) : User::factory()->create()->id,
+            'assigned_support_id' => count($userIds) ? $this->faker->randomElement($userIds) : null,
+            'status_id' => count($statusIds) ? $this->faker->randomElement($statusIds) : TicketStatus::factory()->create()->id,
         ];
     }
 }
