@@ -39,6 +39,8 @@ class LoginController extends Controller
                 'access_token' => $token,
                 'token_type' => 'bearer',
                 'role_id' => $user->role_id,
+                'role' => $user->role->role_name, // <-- esto añade el nombre del rol
+
             ]);
 
         } catch (JWTException $e) {
