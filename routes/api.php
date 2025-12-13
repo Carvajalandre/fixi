@@ -7,15 +7,18 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\LoginController;
 
-// Ruta de ejemplo de usuario autenticado
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('register-user', [UserController::class, 'storeUser']);
+Route::post('register-support', [UserController::class, 'storeSupport']);
 
-// Rutas API de tu aplicación
-Route::apiResource('areas', AreaController::class);
-Route::apiResource('roles', RoleController::class)->only(['index','show']);
-Route::apiResource('users', UserController::class);
-Route::apiResource('ticket-statuses', TicketStatusController::class)->only(['index','show']);
-Route::apiResource('tickets', TicketController::class);
+
+Route::middleware(\App\Http\Middleware\CustomAuthenticate::class)->group(function () {
+    Route::apiResource('tickets', TicketController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('areas', AreaController::class);
+    Route::apiResource('roles', RoleController::class)->only(['index','show']);
+    Route::apiResource('ticket-statuses', TicketStatusController::class)->only(['index','show']);
+    Route::post('logout', [LoginController::class, 'logout']);
+});
