@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TicketStatusSeeder::class,
             TicketSeeder::class,
+            InteractionSeeder::class,
         ]);
     }
 }
