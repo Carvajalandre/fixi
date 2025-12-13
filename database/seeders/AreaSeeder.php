@@ -13,6 +13,7 @@ class AreaSeeder extends Seeder
      */
     public function run(): void
     {
-        Area::factory()->count(5)->create();
+        Area::firstOrCreate(['area_name' => 'Soporte']);
+        Area::factory()->count(4)->create();
     }
 }
