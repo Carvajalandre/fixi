@@ -18,19 +18,38 @@ class UserController extends Controller
         return User::with('role','area')->findOrFail($id);
     }
 
-    public function store(Request $request)
+    public function storeUser(Request $request)
     {
         $validated = $request->validate([
             'full_name' => 'required|string|max:100',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6',
-            'role_id' => 'required|exists:roles,id',
             'area_id' => 'required|exists:areas,id',
         ]);
 
+        $validated['role_id'] = 1; // id del rol "user"
         $validated['password'] = Hash::make($validated['password']);
 
-        return User::create($validated);
+        $user = User::create($validated);
+
+        return response()->json($user, 201);
+    }
+
+    public function storeSupport(Request $request)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:100',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:6',
+            'area_id' => 'required|exists:areas,id',
+        ]);
+
+        $validated['role_id'] = 2; // id del rol "support"
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+
+        return response()->json($user, 201);
     }
 
     public function update(Request $request, $id)
