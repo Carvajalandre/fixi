@@ -16,6 +16,9 @@ Route::post('register-support', [UserController::class, 'storeSupport']);
 
 
 Route::middleware(\App\Http\Middleware\CustomAuthenticate::class)->group(function () {
+    Route::get('me', function (Request $request) {
+        return $request->user();
+    });
     Route::apiResource('tickets', TicketController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('areas', AreaController::class);
