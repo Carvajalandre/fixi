@@ -42,7 +42,13 @@ class UserController extends Controller
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6',
             'area_id' => 'required|exists:areas,id',
+            'support_code' => 'required|string',
         ]);
+        // Lista de códigos válidos (mejor guardarlos en .env)
+        $validCodes = explode(',', env('SUPPORT_CODES', 'ABC123,XYZ789'));
+        if (!in_array($validated['support_code'], $validCodes)) {
+            return response()->json(['error' => 'Código de soporte inválido'], 403);
+        }
 
         $validated['role_id'] = 2; // id del rol "support"
         $validated['password'] = Hash::make($validated['password']);
