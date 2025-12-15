@@ -19,13 +19,13 @@ Route::middleware(\App\Http\Middleware\CustomAuthenticate::class)->group(functio
     Route::get('me', function (Request $request) {
         return $request->user();
     });
+    Route::get('tickets/{ticketId}/interactions', [InteractionController::class, 'index']);
+    Route::post('interactions', [InteractionController::class, 'store']);
+    Route::get('interactions/{id}', [InteractionController::class, 'show']);
     Route::apiResource('tickets', TicketController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('areas', AreaController::class);
     Route::apiResource('roles', RoleController::class)->only(['index','show']);
     Route::apiResource('ticket-statuses', TicketStatusController::class)->only(['index','show']);
-    Route::get('tickets/{ticketId}/interactions', [InteractionController::class, 'index']);
-    Route::post('interactions', [InteractionController::class, 'store']);
-    Route::get('interactions/{id}', [InteractionController::class, 'show']);
     Route::post('logout', [LoginController::class, 'logout']);
 });
