@@ -17,8 +17,10 @@ Route::post('register-support', [UserController::class, 'storeSupport']);
 
 Route::middleware(\App\Http\Middleware\CustomAuthenticate::class)->group(function () {
     Route::get('me', function (Request $request) {
-        return $request->user();
+        return $request->user()->load('role','area');
     });
+
+    Route::post('tickets/{id}/assign', [TicketController::class, 'assign']);
     Route::get('tickets/{ticketId}/interactions', [InteractionController::class, 'index']);
     Route::post('interactions', [InteractionController::class, 'store']);
     Route::get('interactions/{id}', [InteractionController::class, 'show']);
