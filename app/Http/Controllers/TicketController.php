@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
     public function index()
     {
-        return Ticket::with('requester','assignedSupport','status')->get();
+        $user = Auth::user();
+
+        $query = Ticket::with('requester','assignedSupport','status');
+
+        if ($user->role_id === 1){
+            $query->where('requester_id', $user->id);
+        }
+
+        return $query->get();
     }
 
     public function show($id)
