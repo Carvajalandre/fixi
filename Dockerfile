@@ -7,7 +7,7 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 # Etapa 2: Producción
-FROM php:8.2-fpm
+FROM php:8.3.36-fpm
 
 # Instalar dependencias del sistema y extensiones PHP necesarias
 RUN apt-get update && apt-get install -y \
